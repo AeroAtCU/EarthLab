@@ -30,7 +30,7 @@ def crop_smallest(im1, im2):
     return im1, im2
 
 # define image paths
-prefix = "fountain"
+prefix = "tree"
 
 path = "C:/Users/iaad5777/Documents/git/EarthLab/photos/"
 rgb_name = prefix + "_rgb.jpg"
@@ -52,25 +52,23 @@ else:
     exit()
 
 # calculate pure ndvi values (only red and nir)
+# unsure why red is still needed but does not currently work using rgb_im
 red_im = np.zeros((rgb_shape[0], rgb_shape[1], 3))
 red_im[:,:,0] = rgb_im[:,:,0]
 
 ndvi_im = np.zeros((rgb_shape[0], rgb_shape[1], 3))
 ndvi_im[:,:,0] = (red_im[:,:,0] - nir_im[:,:,0]) / (red_im[:,:,0] + nir_im[:,:,0])
 
-# normalize values to work with 0-255 jpg/ png
-# this casuses errors. ndvi_im is pretty good at seeing plants, but when
-# I try to normalize the colors something goes wrong.
+# normalize values to work with 0-255 jpg/ png and look better
+# first add one to ndvi_im so there's no clipping (f64 goes from -1 -> 1)
+# then divide by the max to get a full range of color
 ndvi_norm_im = ( (ndvi_im+1) / np.max(ndvi_im+1) ) * -255 # negative inverts
-ndvi_norm_f64 = ( ndvi_im / np.max(ndvi_im) ) * -255
-ndvi_norm_im = np.uint8(ndvi_norm_im)
 
-ndvi_norm_im[:,:,1] = ndvi_norm_im[:,:,0] # apply values to green channel
-ndvi_norm_im[:,:,0] = rgb_im[:,:,0]
-ndvi_norm_im[:,:,2] = rgb_im[:,:,2]
-ndvi_norm_im = np.uint8(ndvi_norm_im)
+ndvi_norm_im[:,:,1] = ndvi_norm_im[:,:,0] # add NDVI on green channel
+ndvi_norm_im[:,:,0] = rgb_im[:,:,0] # add visual red 
+ndvi_norm_im[:,:,2] = rgb_im[:,:,2] # add visual blue 
+ndvi_norm_im = np.uint8(ndvi_norm_im) # convert for use in jpg
 
 # write images
-imageio.imwrite(path + prefix + "_pure_ndvi.jpg", ndvi_im[:,:])
-imageio.imwrite(path + prefix + "_pure_ndvi_scaled.jpg", ndvi_norm_f64[:,:])
+# imageio.imwrite(path + prefix + "_pure_ndvi.jpg", ndvi_im[:,:])
 imageio.imwrite(path + prefix + "_ndvi.jpg", ndvi_norm_im[:,:])
