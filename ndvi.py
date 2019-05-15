@@ -30,9 +30,11 @@ def crop_smallest(im1, im2):
     return im1, im2
 
 # define image paths
+prefix = "fountain"
+
 path = "C:/Users/iaad5777/Documents/git/EarthLab/photos/"
-rgb_name = "landscape_rgb.jpg"
-nir_name = "landscape_nir.jpg"
+rgb_name = prefix + "_rgb.jpg"
+nir_name = prefix + "_nir.jpg"
 
 # import images
 rgb_im = imageio.imread(path + rgb_name)
@@ -57,7 +59,11 @@ ndvi_im = np.zeros((rgb_shape[0], rgb_shape[1], 3))
 ndvi_im[:,:,0] = (red_im[:,:,0] - nir_im[:,:,0]) / (red_im[:,:,0] + nir_im[:,:,0])
 
 # normalize values to work with 0-255 jpg/ png
-ndvi_norm_im = ( ndvi_im / np.max(ndvi_im) ) * -255
+# this casuses errors. ndvi_im is pretty good at seeing plants, but when
+# I try to normalize the colors something goes wrong.
+ndvi_norm_im = ( (ndvi_im+1) / np.max(ndvi_im+1) ) * -255 # negative inverts
+ndvi_norm_f64 = ( ndvi_im / np.max(ndvi_im) ) * -255
+ndvi_norm_im = np.uint8(ndvi_norm_im)
 
 ndvi_norm_im[:,:,1] = ndvi_norm_im[:,:,0] # apply values to green channel
 ndvi_norm_im[:,:,0] = rgb_im[:,:,0]
@@ -65,5 +71,6 @@ ndvi_norm_im[:,:,2] = rgb_im[:,:,2]
 ndvi_norm_im = np.uint8(ndvi_norm_im)
 
 # write images
-#imageio.imwrite(path + "ndvi_pure.jpg", ndvi_im[:,:]) # problem with this
-imageio.imwrite(path + "ndvi_ndvi_colored.jpg", ndvi_norm_im[:,:])
+imageio.imwrite(path + prefix + "_pure_ndvi.jpg", ndvi_im[:,:])
+imageio.imwrite(path + prefix + "_pure_ndvi_scaled.jpg", ndvi_norm_f64[:,:])
+imageio.imwrite(path + prefix + "_ndvi.jpg", ndvi_norm_im[:,:])
