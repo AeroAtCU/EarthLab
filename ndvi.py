@@ -30,7 +30,7 @@ def crop_smallest(im1, im2):
     return im1, im2
 
 # define image paths
-path = "C:/Users/iaad5777/Documents/git/EarthLab/"
+path = "C:/Users/iaad5777/Documents/git/EarthLab/photos/"
 rgb_name = "landscape_rgb.jpg"
 nir_name = "landscape_nir.jpg"
 
@@ -66,4 +66,4 @@ ndvi_norm_im = np.uint8(ndvi_norm_im)
 
 # write images
 #imageio.imwrite(path + "ndvi_pure.jpg", ndvi_im[:,:]) # problem with this
-imageio.imwrite(path + "ndvi_colored.jpg", ndvi_norm_im[:,:])
+imageio.imwrite(path + "ndvi_ndvi_colored.jpg", ndvi_norm_im[:,:])
