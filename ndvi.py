@@ -26,11 +26,15 @@ def crop_smallest(im1, im2):
         else:
             im2 = im2[:,0:im1_shape[1],:]
             return im1, im2
+        
+    if not(im1[0] == im2[0] and im1[1] == im2[1]):
+        print("crop unsuccessful, exiting")
+        exit()
 
     return im1, im2
 
 # define image paths
-prefix = "tree"
+prefix = "landscape"
 
 path = "C:/Users/iaad5777/Documents/git/EarthLab/photos/"
 rgb_name = prefix + "_rgb.jpg"
@@ -40,16 +44,10 @@ nir_name = prefix + "_nir.jpg"
 rgb_im = imageio.imread(path + rgb_name)
 nir_im = imageio.imread(path + nir_name) # all nir pixel values same
 
-# crop images to smallest dimensions
+# crop images to smallest dimensions, get dimensions
 rgb_im, nir_im = crop_smallest(rgb_im, nir_im)
 rgb_shape = np.shape(rgb_im)
 nir_shape = np.shape(nir_im)
-
-if (rgb_shape[0] == nir_shape[0] and rgb_shape[1] == nir_shape[1]):
-    print("crop successful")
-else:
-    print("crop unsuccessful, exiting")
-    exit()
 
 # calculate pure ndvi values (only red and nir)
 # unsure why red is still needed but does not currently work using rgb_im
@@ -57,18 +55,16 @@ red_im = np.zeros((rgb_shape[0], rgb_shape[1], 3))
 red_im[:,:,0] = rgb_im[:,:,0]
 
 ndvi_im = np.zeros((rgb_shape[0], rgb_shape[1], 3))
-ndvi_im[:,:,0] = (red_im[:,:,0] - nir_im[:,:,0]) / (red_im[:,:,0] + nir_im[:,:,0])
+ndvi_im[:,:,0] = (nir_im[:,:,0] - red_im[:,:,0]) / (red_im[:,:,0] + nir_im[:,:,0])
 
-# normalize values to work with 0-255 jpg/ png and look better
-# first add one to ndvi_im so there's no clipping (f64 goes from -1 -> 1)
-# then divide by the max to get a full range of color
-ndvi_norm_im = ( (ndvi_im+1) / np.max(ndvi_im+1) ) * -255 # negative inverts
+# normalize values for better readability
+ndvi_norm_im = ( (ndvi_im) / np.max(ndvi_im) ) * 255 # scale by largest value
+ndvi_norm_im[ndvi_norm_im < 0] = 0 # remove neg ndvi values (water, land)
+ndvi_norm_im = np.uint8(ndvi_norm_im) # convert to work with imageio jpg
 
 ndvi_norm_im[:,:,1] = ndvi_norm_im[:,:,0] # add NDVI on green channel
 ndvi_norm_im[:,:,0] = rgb_im[:,:,0] # add visual red 
-ndvi_norm_im[:,:,2] = rgb_im[:,:,2] # add visual blue 
-ndvi_norm_im = np.uint8(ndvi_norm_im) # convert for use in jpg
+ndvi_norm_im[:,:,2] = rgb_im[:,:,2] # add visual blue (for looks)
 
-# write images
-# imageio.imwrite(path + prefix + "_pure_ndvi.jpg", ndvi_im[:,:])
+# write image
 imageio.imwrite(path + prefix + "_ndvi.jpg", ndvi_norm_im[:,:])
