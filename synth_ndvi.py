@@ -8,8 +8,8 @@ import imageio
 
 print("Beginning program")
 
-im_read_path = "C:/Users/iaad5777/Documents/git/EarthLab/"
-im_write_path = "C:/Users/iaad5777/Documents/git/EarthLab/test_vari.png"
+im_read_path = "C:/Users/iaad5777/Documents/git/EarthLab/photos/"
+im_write_path = "C:/Users/iaad5777/Documents/git/EarthLab/photos/test_vari.png"
 
 im_orig = imageio.imread(im_read_path + "ex_rgb.png")
 # im[x] is a row of pixels
