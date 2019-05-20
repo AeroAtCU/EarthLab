@@ -5,6 +5,7 @@
 import numpy as np
 import imageio
 import os
+import sys
 
 
 def normalize_255(im1, im_color):
@@ -27,37 +28,60 @@ def check_shape(nir, rgb):
         exit()
 
 def calc_evi(nir, rgb):
-    # L, C1, C2, G = 1, 6, 7.5, 2.5
-    pass
+    check_shape(nir, rgb) # make sure sizes are equal
     
+    L, C1, C2, G = 1, 6, 5, 2.5 # define constants for evi equation
+    
+    # create base zero arrays
+    red = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
+    blue = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
+    evi = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
+    numer = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
+    denom = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
+    
+    # doesn't like it when using rgb, so extract one color per channel
+    red[:,:,0] = rgb[:,:,0]
+    blue[:,:,2] = rgb[:,:,2]
+    
+    # run calculation. np.divide(options) prevents divion by zero (sets any/0 to 0)
+    numer = nir - red[:,:,0]
+    denom = (nir + C1*red[:,:,0] - C2*blue[:,:,2] + L)
+    evi[:,:,1] = G * (np.divide(numer, denom, out=np.zeros_like(numer), where=denom!=0))
+    
+    evi_norm = normalize_255(evi, rgb)
+    
+    return evi_norm
 
 def calc_ndvi(nir, rgb):
-    check_shape(nir, rgb)
+    check_shape(nir, rgb) # make sure sizes are equal
     
+    # create base zero arrays
     red = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
     ndvi = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
     
-    red[:,:,0] = rgb[:,:,1]
-    ndvi[:, :,1] = (nir - red[:, :, 0]) / (red[:, :, 0] + nir)
+    red[:,:,0] = rgb[:,:,1] # extract red
+    # nir is a x by y grid of NIR reflected values. rgb[:,:,0] is a x by y grid of red reflected values.
+    ndvi[:, :,1] = (nir - red[:, :, 0]) / (red[:, :, 0] + nir) # run calculation and set to green channel
     
-    ndvi_norm = normalize_255(ndvi, rgb)
+    ndvi_norm = normalize_255(ndvi, rgb) # norm values to make changes easier to see
     
     return ndvi_norm
     
 
 dir_path = "C:/Users/iaad5777/Documents/git/EarthLab/nirscene1/country/"
-write_path = dir_path # provides options
-files = os.listdir(dir_path)
 ext_nir = "_nir.tiff"
 ext_rgb = "_rgb.tiff"
-ext_output = ".tiff" # tiff faster than jpg
 
-verbose = True
+write_path = dir_path # provides options
+out_ext = ".jpg" # tiff faster than jpg
+
+verbose = False # Display every image vs only errors
 
 for filename in os.listdir(dir_path): # for every file in dir_path
     try:
         if filename.endswith(ext_nir): # if it ends with a certain ext (only want one bc two images being evald)
-            if verbose: print(filename + " being evaluated")
+            # ternary operator stype. also, print("x", end="") prints without newline
+            print(filename + " being evaluated") if verbose else print(".", end="")
             
             # import images (split splits after _, [0] takes first element [the actual filename])
             rgb = imageio.imread(dir_path + filename.split("_")[0] + ext_rgb)
@@ -65,9 +89,11 @@ for filename in os.listdir(dir_path): # for every file in dir_path
             
             # calculate indices
             ndvi_norm = calc_ndvi(nir, rgb)
+            evi_norm = calc_evi(nir, rgb)
             
             # export images
-            imageio.imwrite(dir_path + filename.split("_")[0] + "_ndvi.tiff", ndvi_norm[:,:])
+            imageio.imwrite(write_path + filename.split("_")[0] + "_ndvi" + out_ext, ndvi_norm[:,:])
+            #imageio.imwrite(write_path + filename.split("_")[0] + "_evi" + out_ext, evi_norm[:,:])
         else:
             if verbose: print(filename + " is being skipped")
             
@@ -76,6 +102,6 @@ for filename in os.listdir(dir_path): # for every file in dir_path
         
     except:
         print("something went wrong, exiting")
-        exit()
+        sys.exit(1)
 
 print("done")
