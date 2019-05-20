@@ -12,12 +12,14 @@ def normalize_255(im1, im_color):
     # input: im1 f64 numpy array with some sort of vegetation index info
     # input: im_color numpy array holding original rgb values of the xVI image
     # purpose: take an xVI image and make it human readable and jpg exportable
-    im_norm = (im1 / np.max(im1)) * 255  # gives greatest contrast w/out losing data
+    im_norm = im1
+    im_norm[im_norm > 5] = 0 # remove outliers (AFAIK, veg idx should only go -1:1)
     im_norm[im_norm < 0] = 0  # removes negative values (water, soil)
+    im_norm = (im_norm / np.max(im1)) * 255  # gives greatest contrast w/out losing data
     im_norm = np.uint8(im_norm)  # round off and make uint8 (imageio likes it)
 
     im_norm[:, :, 0] = im_color[:, :, 0]  # add visual red
-    # im_norm[:, :, 2] = im_color[:, :, 2]  # add visual blue (uness but looks better)
+    im_norm[:, :, 2] = im_color[:, :, 2]  # add visual blue (uness but looks better)
 
     return im_norm
 
@@ -30,7 +32,7 @@ def check_shape(nir, rgb):
 def calc_evi(nir, rgb):
     check_shape(nir, rgb) # make sure sizes are equal
     
-    L, C1, C2, G = 1, 6, 5, 2.5 # define constants for evi equation
+    L, C1, C2, G = 1, 6, 7.5, 2.5 # define constants for evi equation
     
     # create base zero arrays
     red = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
@@ -50,7 +52,7 @@ def calc_evi(nir, rgb):
     
     evi_norm = normalize_255(evi, rgb)
     
-    return evi_norm
+    return evi_norm, evi
 
 def calc_ndvi(nir, rgb):
     check_shape(nir, rgb) # make sure sizes are equal
@@ -65,7 +67,7 @@ def calc_ndvi(nir, rgb):
     
     ndvi_norm = normalize_255(ndvi, rgb) # norm values to make changes easier to see
     
-    return ndvi_norm
+    return ndvi_norm, ndvi
     
 
 dir_path = "C:/Users/iaad5777/Documents/git/EarthLab/nirscene1/country/"
@@ -73,7 +75,7 @@ ext_nir = "_nir.tiff"
 ext_rgb = "_rgb.tiff"
 
 write_path = dir_path # provides options
-out_ext = ".jpg" # tiff faster than jpg
+out_ext = ".tiff" # tiff faster than jpg
 
 verbose = False # Display every image vs only errors
 
@@ -81,19 +83,19 @@ for filename in os.listdir(dir_path): # for every file in dir_path
     try:
         if filename.endswith(ext_nir): # if it ends with a certain ext (only want one bc two images being evald)
             # ternary operator stype. also, print("x", end="") prints without newline
-            print(filename + " being evaluated") if verbose else print(".", end="")
+            print(filename + " being evaluated") if verbose else print(".", end='')
             
             # import images (split splits after _, [0] takes first element [the actual filename])
             rgb = imageio.imread(dir_path + filename.split("_")[0] + ext_rgb)
             nir = imageio.imread(dir_path + filename.split("_")[0] + ext_nir)
             
             # calculate indices
-            ndvi_norm = calc_ndvi(nir, rgb)
-            evi_norm = calc_evi(nir, rgb)
+            ndvi_norm, ndvi = calc_ndvi(nir, rgb)
+            evi_norm, evi = calc_evi(nir, rgb)
             
             # export images
             imageio.imwrite(write_path + filename.split("_")[0] + "_ndvi" + out_ext, ndvi_norm[:,:])
-            #imageio.imwrite(write_path + filename.split("_")[0] + "_evi" + out_ext, evi_norm[:,:])
+            imageio.imwrite(write_path + filename.split("_")[0] + "_evi" + out_ext, evi_norm[:,:])
         else:
             if verbose: print(filename + " is being skipped")
             
