@@ -13,13 +13,14 @@ def normalize_255(im1, im_color):
     # input: im_color numpy array holding original rgb values of the xVI image
     # purpose: take an xVI image and make it human readable and jpg exportable
     im_norm = im1
-    im_norm[im_norm > 5] = 0 # remove outliers (AFAIK, veg idx should only go -1:1)
+    im_norm[im_norm > 10] = 0  # remove large outliers (works b/c functions should always normalize)
+    im_norm[im_norm > 1] = 1 # remove outliers (AFAIK, veg idx should only go -1:1)
     im_norm[im_norm < 0] = 0  # removes negative values (water, soil)
     im_norm = (im_norm / np.max(im1)) * 255  # gives greatest contrast w/out losing data
     im_norm = np.uint8(im_norm)  # round off and make uint8 (imageio likes it)
 
     im_norm[:, :, 0] = im_color[:, :, 0]  # add visual red
-    im_norm[:, :, 2] = im_color[:, :, 2]  # add visual blue (uness but looks better)
+    # im_norm[:, :, 2] = im_color[:, :, 2]  # add visual blue (uness but looks better)
 
     return im_norm
 
@@ -88,7 +89,7 @@ for filename in os.listdir(dir_path): # for every file in dir_path
             # import images (split splits after _, [0] takes first element [the actual filename])
             rgb = imageio.imread(dir_path + filename.split("_")[0] + ext_rgb)
             nir = imageio.imread(dir_path + filename.split("_")[0] + ext_nir)
-            
+                        
             # calculate indices
             ndvi_norm, ndvi = calc_ndvi(nir, rgb)
             evi_norm, evi = calc_evi(nir, rgb)
