@@ -4,6 +4,7 @@
 
 import numpy as np
 import imageio
+import os
 
 
 def normalize_255(im1, im_color):
@@ -14,43 +15,67 @@ def normalize_255(im1, im_color):
     im_norm[im_norm < 0] = 0  # removes negative values (water, soil)
     im_norm = np.uint8(im_norm)  # round off and make uint8 (imageio likes it)
 
-    im_norm[:, :, 1] = im_norm[:, :, 0]  # add plant data on green channel
     im_norm[:, :, 0] = im_color[:, :, 0]  # add visual red
-    im_norm[:, :, 2] = im_color[:, :, 2]  # add visual blue (uness but looks better)
+    # im_norm[:, :, 2] = im_color[:, :, 2]  # add visual blue (uness but looks better)
 
     return im_norm
 
 
-for x in range(100):
-    x = x + 1
+def check_shape(nir, rgb):
+    if np.shape(rgb)[0] != np.shape(nir)[0] or np.shape(rgb)[1] != np.shape(nir)[1]:
+        print("Dimension Mismatch, exiting")
+        exit()
+
+def calc_evi(nir, rgb):
+    # L, C1, C2, G = 1, 6, 7.5, 2.5
+    pass
     
+
+def calc_ndvi(nir, rgb):
+    check_shape(nir, rgb)
+    
+    red = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
+    ndvi = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
+    
+    red[:,:,0] = rgb[:,:,1]
+    ndvi[:, :,1] = (nir - red[:, :, 0]) / (red[:, :, 0] + nir)
+    
+    ndvi_norm = normalize_255(ndvi, rgb)
+    
+    return ndvi_norm
+    
+
+dir_path = "C:/Users/iaad5777/Documents/git/EarthLab/nirscene1/country/"
+write_path = dir_path # provides options
+files = os.listdir(dir_path)
+ext_nir = "_nir.tiff"
+ext_rgb = "_rgb.tiff"
+ext_output = ".tiff" # tiff faster than jpg
+
+verbose = True
+
+for filename in os.listdir(dir_path): # for every file in dir_path
     try:
-        prefix = str(x).zfill(4) # pad with zeros (makes 4 digit)
-        in_path = "C:/Users/iaad5777/Documents/git/EarthLab/nirscene1/mountain/"
-        out_path = in_path # to provide more options
-
-        rgb = imageio.imread(in_path + prefix + "_rgb.tiff")
-        nir = imageio.imread(in_path + prefix + "_nir.tiff")
-
-        x_length = np.shape(rgb)[0]
-        y_length = np.shape(rgb)[1]
-    
-        if np.shape(rgb)[0] != np.shape(nir)[0] or np.shape(rgb)[1] != np.shape(nir)[1]:
-            print("Dimension Mismatch, exiting")
-            exit()
-    
-        red = np.zeros((x_length, y_length, 3))
-        ndvi = np.zeros((x_length, y_length, 3))
-        
-        red[:, :, 0] = rgb[:, :, 0]  # extract just red channel
-        
-        ndvi[:, :, 0] = (nir - red[:, :, 0]) / (red[:, :, 0] + nir)
-        
-        ndvi_norm = normalize_255(ndvi, rgb)
-
-        imageio.imwrite(out_path + prefix + "_ndvi.jpg", ndvi_norm[:,:])
-    
+        if filename.endswith(ext_nir): # if it ends with a certain ext (only want one bc two images being evald)
+            if verbose: print(filename + " being evaluated")
+            
+            # import images (split splits after _, [0] takes first element [the actual filename])
+            rgb = imageio.imread(dir_path + filename.split("_")[0] + ext_rgb)
+            nir = imageio.imread(dir_path + filename.split("_")[0] + ext_nir)
+            
+            # calculate indices
+            ndvi_norm = calc_ndvi(nir, rgb)
+            
+            # export images
+            imageio.imwrite(dir_path + filename.split("_")[0] + "_ndvi.tiff", ndvi_norm[:,:])
+        else:
+            if verbose: print(filename + " is being skipped")
+            
     except FileNotFoundError:
-        print("file not found" + str(x))
+        print(filename + " does not exist")
+        
+    except:
+        print("something went wrong, exiting")
+        exit()
 
 print("done")
