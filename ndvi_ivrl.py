@@ -28,7 +28,7 @@ def normalize_255(im1, im_color):
 def check_shape(nir, rgb):
     if np.shape(rgb)[0] != np.shape(nir)[0] or np.shape(rgb)[1] != np.shape(nir)[1]:
         print("Dimension Mismatch, exiting")
-        exit()
+        sys.exit(1)
 
 def calc_evi(nir, rgb):
     check_shape(nir, rgb) # make sure sizes are equal
@@ -71,7 +71,8 @@ def calc_ndvi(nir, rgb):
     return ndvi_norm, ndvi
     
 
-dir_path = "C:/Users/iaad5777/Documents/git/EarthLab/nirscene1/country/"
+# dir_path = "C:/Users/iaad5777/Documents/git/EarthLab/nirscene1/country/" # uncomment this and change it to exact path if os.path.<etc> doesn't work
+dir_path = os.path.dirname(os.path.abspath(__file__)) + "/nirscene1/forest/"
 ext_nir = "_nir.tiff"
 ext_rgb = "_rgb.tiff"
 
@@ -80,11 +81,13 @@ out_ext = ".tiff" # tiff faster than jpg
 
 verbose = False # Display every image vs only errors
 
-for filename in os.listdir(dir_path): # for every file in dir_path
+print("beginning loop inside " + dir_path) if verbose else print("start")
+for filename in os.listdir(dir_path): # for every file in dir_path (NOT IN ORDER)
     try:
         if filename.endswith(ext_nir): # if it ends with a certain ext (only want one bc two images being evald)
             # ternary operator stype. also, print("x", end="") prints without newline
-            print(filename + " being evaluated") if verbose else print(".", end='')
+            #print(filename + " being evaluated") if verbose else print(".", end='')
+            print(filename + " being evaluated") if verbose else print(".", end = "")
             
             # import images (split splits after _, [0] takes first element [the actual filename])
             rgb = imageio.imread(dir_path + filename.split("_")[0] + ext_rgb)
@@ -97,8 +100,10 @@ for filename in os.listdir(dir_path): # for every file in dir_path
             # export images
             imageio.imwrite(write_path + filename.split("_")[0] + "_ndvi" + out_ext, ndvi_norm[:,:])
             imageio.imwrite(write_path + filename.split("_")[0] + "_evi" + out_ext, evi_norm[:,:])
+        elif filename.endswith(ext_rgb): 
+            pass # nec bc only want below when filename != _rgb.tiff || _nir.tiff
         else:
-            if verbose: print(filename + " is being skipped")
+            print(filename + " is not a file I can use") if verbose else print("", end='') # to provide options
             
     except FileNotFoundError:
         print(filename + " does not exist")
