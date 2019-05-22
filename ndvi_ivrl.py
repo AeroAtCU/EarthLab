@@ -94,7 +94,6 @@ def calc_ndvi(nir, rgb):
     
     return ndvi_norm, ndvi
     
-
 # define inputs path and type (currently only tested on .tiffs from above dataset)
 script_path = os.path.dirname(os.path.abspath(__file__)) # get current (script) directory
 ivrl_folder = os.path.join("nirscene1", "country") # join with the dataset
@@ -110,7 +109,7 @@ print("beginning loop inside " + read_path) if verbose else print("start")
 
 for filename in os.listdir(read_path): # for every file in read_path (NOT IN ORDER)
     try:
-        if filename.endswith(ext_nir): # if it ends with a certain ext (only want one bc two images being evald)
+        if filename.endswith(ext_nir): # only want one bc two images being evald
             # "ternary operator" style. end = "" specifies the end char to nothing (default~ \n)
             print(filename + " being evaluated") if verbose else print(".", end="")
             
