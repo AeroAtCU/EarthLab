@@ -32,15 +32,17 @@ def check_shape(nir, rgb):
 
 def calc_evi(nir, rgb):
     check_shape(nir, rgb) # make sure sizes are equal
+    xleng = np.shape(rgb)[0]
+    yleng = np.shape(rgb)[1]
     
     L, C1, C2, G = 1, 6, 7.5, 2.5 # define constants for evi equation
     
     # create base zero arrays
-    red = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
-    blue = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
-    evi = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
-    numer = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
-    denom = np.zeros((np.shape(rgb)[0], np.shape(rgb)[1], 3))
+    red = np.zeros((xleng, yleng, 3))
+    blue = np.zeros((xleng, yleng, 3))
+    evi = np.zeros((xleng, np.shape(rgb)[1], 3))
+    numer = np.zeros((xleng, np.shape(rgb)[1], 3))
+    denom = np.zeros((xleng, np.shape(rgb)[1], 3))
     
     # doesn't like it when using rgb, so extract one color per channel
     red[:,:,0] = rgb[:,:,0]
