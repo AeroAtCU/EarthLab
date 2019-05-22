@@ -7,7 +7,6 @@ import numpy as np
 import imageio
 import os
 import sys
-# from pathlib import Path # better way to handle files, currently unecessary
 
 
 def normalize_vegidx(vegidx_im, rgb):
@@ -71,6 +70,7 @@ def calc_evi(nir, rgb):
     
     return evi_norm, evi
 
+
 def calc_ndvi(nir, rgb):
     # input: nir x*y numpy array representing a picture
     # input: rgb x*y*3 numpy array representing a picture
@@ -94,6 +94,7 @@ def calc_ndvi(nir, rgb):
     
     return ndvi_norm, ndvi
     
+
 # define inputs path and type (currently only tested on .tiffs from above dataset)
 script_path = os.path.dirname(os.path.abspath(__file__)) # get current (script) directory
 ivrl_folder = os.path.join("nirscene1", "country") # join with the dataset
@@ -104,14 +105,13 @@ write_path = read_path # provides options
 out_ext = ".tiff" # exporting to tiff is faster than jpg
 
 verbose = True # describe each file or just symbols
-# ? = FileNotFoundError; x = file cannot be used; . = new picture being converted 
 
 print("beginning loop inside " + read_path) if verbose else print("start")
 
 for filename in os.listdir(read_path): # for every file in read_path (NOT IN ORDER)
     try:
         if filename.endswith(ext_nir): # if it ends with a certain ext (only want one bc two images being evald)
-            # ternary operator style. also, print("x", end="") prints without newline
+            # "ternary operator" style. end = "" specifies the end char to nothing (default~ \n)
             print(filename + " being evaluated") if verbose else print(".", end="")
             
             # import images (split splits after _, [0] takes first element [the actual filename])
@@ -125,7 +125,7 @@ for filename in os.listdir(read_path): # for every file in read_path (NOT IN ORD
             # export images
             imageio.imwrite(write_path + filename.split("_")[0] + "_ndvi" + out_ext, ndvi_norm[:,:])
             imageio.imwrite(write_path + filename.split("_")[0] + "_evi" + out_ext, evi_norm[:,:])
-        elif filename.endswith(ext_rgb) or filename.endswith("vi.tiff"): # not best way to do this
+        elif filename.endswith(ext_rgb) or filename.endswith("vi.tiff"): # not the best way to do this
             pass # necessary bc of the file and loop structure
         else:
             print(filename + " is not a file I can use") if verbose else print("x", end="")
