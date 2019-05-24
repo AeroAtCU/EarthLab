@@ -10,38 +10,40 @@ import sys
 
 
 def normalize_vegidx(vegidx_im, rgb):
-    # input: vegidx_im f64 numpy array containing vegetation index info
-    # input: rgb numpy array holding original color values of the image
     # purpose: take vegitation index calculated data and make it human readable and exportable
+    # input: vegidx_im x*y f64 numpy array containing vegetation index info
+    # input: rgb x*y*3 numpy array holding original color values of the image
 
     # remove outliers (vegidx should always go between -1:1)
-    vegidx_im[vegidx_im > 5] = 0
-    vegidx_im[vegidx_im > 1] = 1
-    vegidx_im[vegidx_im < 0] = 0
+    output_im = vegidx_im
+    output_im[output_im > 5] = 0
+    output_im[output_im > 1] = 1
+    output_im[output_im < 0] = 0
 
     # normalize the values to work best with images
-    vegidx_im *= 255 / np.max(vegidx_im) # equivalent to vegidx_im = 255 * (vegidx_im / np.max(vegidx_im)), but probably faster
-    vegidx_im = np.uint8(vegidx_im)  # make uint8 (round and change datatype. imageio prefers uint8)
+    output_im *= 255 / np.max(output_im) # equivalent to output_im = 255 * (output_im / np.max(output_im)), but probably faster
+    output_im = np.uint8(output_im)  # make uint8 (round and change datatype. imageio prefers uint8)
 
     # add visual bands
-    vegidx_im[:, :, 0] = rgb[:, :, 0] # rgb[x,y,z] {z=(0,1,2) -> (r,g,b)}
+    output_im[:, :, 0] = rgb[:, :, 0] # rgb[x,y,z] {z=(0,1,2) -> (r,g,b)}
 
-    return vegidx_im
+    return output_im
 
 
 def check_shape(nir, rgb):
+    # purpose: check if x and y dims are the same, exit if not (should return bool, but should also always be the same)
     # input: nir x*y numpy array
     # input: rgb x*y*3 numpy array
-    # purpose: check if x and y dims are the same, exit if not (should always be the same)
+    
     if np.shape(rgb)[0] != np.shape(nir)[0] or np.shape(rgb)[1] != np.shape(nir)[1]:
         print("Dimension mismatch, exiting.")
         sys.exit(1)
-
+    
 
 def calc_evi(nir, rgb):
+    # purpose: calculate the enhanced vegitation index
     # input: nir x*y numpy array representing a picture
     # input: rgb x*y*3 numpy array representing a picture
-    # purpose: calculate the enhanced vegitation index
 
     check_shape(nir, rgb) # make sure sizes are equal
     xleng = np.shape(rgb)[0]
@@ -72,9 +74,9 @@ def calc_evi(nir, rgb):
 
 
 def calc_ndvi(nir, rgb):
+    # purpose: calculate the normalized difference vegitation index from an rgb and nir image
     # input: nir x*y numpy array representing a picture
     # input: rgb x*y*3 numpy array representing a picture
-    # purpose: calculate the normalized difference vegitation index
     # notes: nir is a grid of NIR reflected values. rgb[:,:,0] is a grid of red reflected values.
     
     check_shape(nir, rgb) # make sure sizes are equal
@@ -94,16 +96,17 @@ def calc_ndvi(nir, rgb):
     
     return ndvi_norm, ndvi
     
+
 # define inputs path and type (currently only tested on .tiffs from above dataset)
-script_path = os.path.dirname(os.path.abspath(__file__)) # get current (script) directory
-ivrl_folder = os.path.join("nirscene1", "country") # join with the dataset
-read_path = os.path.join(script_path, ivrl_folder, "")
+ivrl_folder = os.path.join("nirscene1", "country") # dataset folder (nirscene1) and subfolder (country, forest, etc) with actual images
+script_path = os.path.dirname(os.path.abspath(__file__)) # get current (script's) directory
+read_path = os.path.join(script_path, ivrl_folder, "") # full path to folder. last <""> adds the correct slash or backslash. works w/ / and \ bc python, but safer
 ext_nir = "_nir.tiff"
 ext_rgb = "_rgb.tiff"
 write_path = read_path # provides options
 out_ext = ".tiff" # exporting to tiff is faster than jpg
 
-verbose = True # describe each file or just symbols
+verbose = False # describe each file or just symbols
 
 print("beginning loop inside " + read_path) if verbose else print("start")
 

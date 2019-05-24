@@ -1,4 +1,4 @@
-# purpose: read an rgb and nir image, combine and export into an ndvi
+# purpose: read an rgb and nir .tiff image, combine and export into an ndvi image
 # (and possibly other xVI) images
 # for this to work on a personal computer, change the path variable to whatever it is on your machine
 
@@ -89,8 +89,8 @@ blue[:,:,0] = rgb[:,:,2]
 
 # apply calculation result to green channel
 ndvi[:, :, 1] = (nir[:, :, 0] - red[:, :, 0]) / (red[:, :, 0] + nir[:, :, 0])
-savi[:, :, 1] = ((1 + L_savi) * (nir[:, :, 0] - red[:, :, 0])) / (nir[:, :, 0] + red[:, :, 0] + L_savi)
-# evi[:,:,1] = (nir[:,:,0] - red[:,:,0]) / (nir[:,:,0] + C1_evi*red[:,:,0] - C2_evi*blue[:,:,0] + L_evi)
+savi[:, :, 1] = ((1 + L_savi) * (nir[:, :, 0] - red[:, :, 0])) / (nir[:, :, 0] + red[:, :, 0] + L_savi) # does not like savi
+
 numer = (nir[:,:,0] - red[:,:,0])
 denom = (nir[:,:,0] + C1_evi*red[:,:,0] - C2_evi*blue[:,:,0] + L_evi)
 evi[:,:,1] = G * np.divide(numer, denom, out=np.zeros_like(numer), where=denom!=0)
@@ -106,6 +106,4 @@ if np.array_equal(ndvi_norm, savi_norm):
 # write image
 imageio.imwrite(path + prefix + "_ndvi.jpg", ndvi_norm[:, :])
 imageio.imwrite(path + prefix + "_evi.jpg", evi_norm[:,:])
-# imageio.imwrite(path + prefix + "_savi.jpg", savi_norm[:, :])
-# savi ends up having the same values for some reason
 print("done")
