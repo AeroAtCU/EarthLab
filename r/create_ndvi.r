@@ -1,6 +1,16 @@
 # get 2 images, convert to ndvi, save output image. will be a function
+# for ndvi_ivrl.R  eventually
 
-# this is not a good way to do this but I don't want to install here() rn
-source("C:/Users/iaad5777/Documents/git/EarthLab/r/VIHelper.R")
+# run these once
+# install.packages("package") [tidyverse, magick]
+cat("\014") # send Ctrl+L to consle (clear)
+library("here")
+library("imager") # probably delete imager and use magick
+library("magick")
+source(here::here("r","VIHelper.R")) # grab helper functions
+
+# program begins
+# rgb_path <- here::here("nirscene1","country","0000_rgb.tiff")
+# nir_path <- here::here("nirscene1","country","0000_nir.tiff")
 
 testPrint()

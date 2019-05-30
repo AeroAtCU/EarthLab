@@ -1,4 +1,4 @@
-calcNDVI <- function(rgb_im, nir_im, verbose = FALSE){
+calcNDVI <- function(rgb_im, nir_im, verbose = FALSE) {
   # Calculate the normalized difference vegitation index
   #
   # Args:
@@ -11,6 +11,6 @@ calcNDVI <- function(rgb_im, nir_im, verbose = FALSE){
   cat("calcNDVI called")
 }
 
-testPrint <- function(){
+testPrint <- function() {
   cat("asdf")
 }
