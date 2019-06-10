@@ -2,4 +2,4 @@ jpg1/
 *.swp
 nirscene1/
 photos/
-*.Rhistory
+r_tmpout/
