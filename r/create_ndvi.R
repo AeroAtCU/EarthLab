@@ -5,39 +5,15 @@
 # sudo apt install libmagick++-dev
 # https://cran.r-project.org/web/packages/magick/vignettes/intro.html
 
-get_scriptpath <- function() {
-  # location of script can depend on how it was invoked:
-  # source() and knit() put it in sys.calls()
-  path <- NULL
-  
-  if(!is.null(sys.calls())) {
-    # get name of script - hope this is consisitent!
-    path <- as.character(sys.call(1))[2] 
-    # make sure we got a file that ends in .R, .Rmd or .Rnw
-    if (grepl("..+\\.[R|Rmd|Rnw]", path, perl=TRUE, ignore.case = TRUE) )  {
-      return(path)
-    } else { 
-      message("Obtained value for path does not end with .R, .Rmd or .Rnw: ", path)
-    }
-  } else{
-    # Rscript and R -f put it in commandArgs
-    args <- commandArgs(trailingOnly = FALSE)
-  }
-  return(path)
-}
-
-library("here")
 library("magick")
 
-here_path = here::here()
-script_path = get_scriptpath()
+# get working directories. dirname gives parent.
+this_wd = getwd()
+this_parent = dirname(this_wd)
+nirscene1_path = file.path(this_parent,"nirscene1") # hardcoded but should always be the same if using correct dataset.
+out_path <- "C:\\Users\\iaad5777\\Documents\\git\\EarthLab\\r_tmpout" # bad
 
-#source(here::here("r","VIHelper.R")) # grab helper functions
+rgb_path = file.path(nirscene1_path,"country","0000_rgb.tiff")
 
-cat("===== running =====\n")
-
-#tmp_input <- magick::image_read(rgb_path)
-#magick::image_write(tmp_input, path=out_path, format = "png")
-
-cat("script_path:",script_path,"\n")
-cat("here_path:",here_path,"\n")
+tmp_input <- magick::image_read(rgb_path)
+magick::image_write(tmp_input, path=out_path, format = "png") #cannot write the image
