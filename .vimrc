@@ -64,9 +64,11 @@ set pastetoggle=<F2>
 
 " Commands for runnings scripts or programs from command line.
 "% gives current filename. ; seperates commands. <CR> carriage return.
-nnoremap <c-m> :w <Enter> :!make <Enter>
-nnoremap <c-p> <Esc>:w<CR>:!clear;python3 %<CR>
-nnoremap <c-r> <Esc>:w<CR>:!clear;Rscript %<CR>
+"nnoremap <c-m> :w <Enter> :!make <Enter>
+"nnoremap <c-p> <Esc>:w<CR>:!clear;python3 %<CR>
+
+au FileType python map <C-M> :!clear;python3 % <CR>
+au FileType cpp map <C-M> :!clear;make % <CR>
 
 :command W w
 :command Q q
@@ -81,5 +83,3 @@ function! Tab_Or_Complete()
 endfunction
 :inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
 :set dictionary="/usr/dict/words"
-
-"test
