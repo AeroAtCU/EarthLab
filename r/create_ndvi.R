@@ -24,7 +24,7 @@ nir <- magick::image_read(nir_path)
 red <- magick::image_channel(rgb, "red")
 
 # subtract red from NIR (does not work)
-red_nir <- c(rgb; nir)
+red_nir <- c(rgb, nir)
 red_nir_sub <- magick::image_flatten(red_nir,operator="Minus")
 
 magick::image_browse(red_nir_sub)
