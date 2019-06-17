@@ -7,3 +7,5 @@ r_tmpout/
 .Rproj.user
 DCIM/
 r/r.Rproj
+
+*.tif

@@ -1,32 +1,28 @@
-# import 2 images given filepaths/ names, convert to ndvi, save output image. will be a function eventaully
 # https://www.agisoft.com/pdf/PS_1.3%20-Tutorial%20(BL)%20-%20Orthophoto,%20DEM%20(GCPs).pdf
-# save.as
+# https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-data/vegetation-indices-NDVI-in-R/
 
-# install.packages("package_name")
 # for magick, you might have to install imagemagick or it's extras first. Xubuntu wanted:
 # sudo apt install libmagick++-dev
-# https://cran.r-project.org/web/packages/magick/vignettes/intro.html
+rm(list=ls())
 
 library("magick")
+library("raster")
+library("rgeos")
+library("rgdal")
+library("RColorBrewer")
+options(stringsAsFactors = FALSE) # want strings to be string s
 
-# get working directories. dirname gives parent.
-this_wd = getwd()
-this_parent = dirname(this_wd)
-nirscene1_path = file.path(this_parent,"nirscene1") # hardcoded but should always be the same if using correct dataset.
-out_path = file.path(this_parent,"r_tmpout")
-  
-rgb_path = file.path(nirscene1_path,"country","0000_rgb.tiff")
-nir_path = file.path(nirscene1_path,"country","0000_nir.tiff")
+this_wd <- getwd()
+images_path <- file.path(dirname(this_wd),"nirscene1") # assuming folder is in parent
 
-# grab images and extract color channels (seems to work)
-rgb <- magick::image_read(rgb_path)
-nir <- magick::image_read(nir_path)
-red <- magick::image_channel(rgb, "red")
+img_num <- "0000" # eventually, how to convert int to 0 padded string?
+subfolder <- "country"
 
-# subtract red from NIR (does not work)
-red_nir <- c(rgb, nir)
-red_nir_sub <- magick::image_flatten(red_nir,operator="Minus")
+rgb <- stack(file.path(images_path, subfolder, (paste(img_num,"_rgb.tiff",sep=""))))
+nir <- stack(file.path(images_path, subfolder, (paste(img_num,"_nir.tiff",sep=""))))
 
-magick::image_browse(red_nir_sub)
-magick::image_write(red_nir_sub, path=out_path, format = "png") #cannot write the image on student computer, not admin
-#
+ndvi <- (nir[[1]] - rgb[[3]]) / (nir[[1]] + rgb[[3]])
+
+plot(ndvi,
+     main = paste(img_num,"_nir.tiff",sep=""),
+     axes = FALSE, box = FALSE)
