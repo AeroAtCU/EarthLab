@@ -1,22 +1,25 @@
+# Import rgb, nir image and create ndvi plot. Eventually loop through entire set and export Vi images.
+
+# Useful links:
 # https://www.agisoft.com/pdf/PS_1.3%20-Tutorial%20(BL)%20-%20Orthophoto,%20DEM%20(GCPs).pdf
 # https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-data/vegetation-indices-NDVI-in-R/
+# https://ivrl.epfl.ch/research-2/research-downloads/supplementary_material-cvpr11-index-html/
 
-# for magick, you might have to install imagemagick or it's extras first. Xubuntu wanted:
-# sudo apt install libmagick++-dev
-# ":s/^/# /" will crash rstudio
+# ":s/^/# /" (comment selected block) will crash rstudio in vim input mode
 rm(list=ls()) # clear all variables. Apparently bad practice but seemingly necessary
+cat("\014") # send C-L to console to clear
 
-library("magick")
+# techincally don't need to source these if using package::fun for everything
+#source("some_function.R")
 library("raster")
 library("rgeos")
 library("rgdal")
 library("RColorBrewer")
 options(stringsAsFactors = FALSE) # want strings to be string s
-#source("some_function.R")
 
 # Define filepaths and strings (some will need to be looped)
-# this_wd <- getwd()
-this_wd <- "C:/Users/iaad5777/Documents/git/EarthLab/r"
+# this_wd <- getwd() # inconsistent
+this_wd <- "C:/Users/iaad5777/Documents/git/EarthLab/r" # harcoded for now
 images_path <- file.path(dirname(this_wd),"nirscene1") # assuming folder is in parent
 img_num <- "0001" # eventually, how to convert int to 0 padded string?
 subfolder <- "forest"
