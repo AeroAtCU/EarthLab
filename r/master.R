@@ -13,11 +13,13 @@ setwd("C:/Users/iaad5777/Documents/git/EarthLab/r") # harcoded for now
 
 source("create_save_ndvi.R")
 
+# needs work
 this_wd <- "C:/Users/iaad5777/Documents/git/EarthLab/r" # harcoded for now
 images_path <- file.path(dirname(this_wd),"nirscene1") # assuming folder is in parent
 out_path <- file.path(dirname(this_wd),"r_tmpout") # assuming folder is in parent
-img_num <- "0001" # eventually, how to convert int to 0 padded string?
+img_num <- "0033" # eventually, how to convert int to 0 padded string?
 subfolder <- "country"
+subfolder_list <- c("country", "field", "forest", "mountain", "water") # list of usable ivrl folders
 
 rgb_path <- (file.path(images_path, subfolder, (paste(img_num,"_rgb.tiff",sep=""))))
 nir_path <- (file.path(images_path, subfolder, (paste(img_num,"_nir.tiff",sep=""))))
