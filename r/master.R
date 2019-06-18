@@ -22,4 +22,4 @@ rgb_path <- (file.path(images_path, subfolder, (paste(img_num,"_rgb.tiff",sep=""
 nir_path <- (file.path(images_path, subfolder, (paste(img_num,"_nir.tiff",sep=""))))
 out_path <- file.path(dirname(this_wd),"r_tmpout","asdf.png") # assuming folder is in parent
 
-create_save_ndvi(rgb_path=rgb_path, nir_path=nir_path, out_path = out_path)
+create_save_ndvi(rgb_path, nir_path, out_path)
