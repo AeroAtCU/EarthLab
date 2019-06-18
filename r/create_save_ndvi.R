@@ -1,11 +1,20 @@
 create_save_ndvi <- function(rgb_path="", nir_path="", out_path=""){
-  # Input: Absolute paths to rgb, nir, and output image.
-  # Output: True/False on success of function (import, calculation, img writing)
-  # Notes: Tries to overwrite the output image if it already exists.
-  #        Requires packages "raster", "rgeos", "rgdal", "RColorBrewer" (Probably?)
-  #        Should output in any standard formats (png, jpg, etc). Only tested with ".png"
+  # Calculates and save an NDVI image from an existing rgb and nir image.
+  #
+  # Args:
+  #   rgb_path: absolute path to the 3 channel rgb image
+  #   nir_path: absolute path to the 1 channel nir image
+  #   out_path: asbolute path to the output image. (".../folder/name.png")
+  #
+  # Returns:
+  #   (Intended to) TRUE if no errors occured, FALSE otherwise.
+  # 
+  # Notes:
+  #   Tries to overwrite the output image if it already exists.
+  #   Requires packages "raster", "rgeos", "rgdal", "RColorBrewer" (Probably?)
+  #   Should output in any standard formats (png, jpg, etc). Only tested with ".png"
   
-  options(stringsAsFactors = FALSE) # seemingly uneccessary
+  options(stringsAsFactors = FALSE) # likely uneccessary, but earthdatascience.org likes it.
   
   # make sure files exist
   if (!file.exists(rgb_path) | !file.exists(nir_path)){
