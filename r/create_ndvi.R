@@ -1,21 +1,11 @@
 # Input: Absolute paths to rgb, nir, and output image.
-# Output: True if successfully wrote image, False if error occured.
-
-# Useful links:
-# https://www.agisoft.com/pdf/PS_1.3%20-Tutorial%20(BL)%20-%20Orthophoto,%20DEM%20(GCPs).pdf
-# https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-data/vegetation-indices-NDVI-in-R/
-# https://ivrl.epfl.ch/research-2/research-downloads/supplementary_material-cvpr11-index-html/
-
-# ":s/^/# /" (comment selected block) will crash rstudio in vim input mode
-rm(list=ls()) # clear all variables. Apparently bad practice but seemingly necessary
-cat("\014") # send C-L to console to clear
+# Output: True/False on success of function (import, calculation, img writing)
 
 # techincally don't need to source these if using package::fun for everything
-#source("some_function.R")
-library("raster")
-library("rgeos")
-library("rgdal")
-library("RColorBrewer")
+#library("raster")
+#library("rgeos")
+#library("rgdal")
+#library("RColorBrewer")
 options(stringsAsFactors = FALSE) # want strings to be string s
 
 # Define filepaths and strings (some will need to be looped)
@@ -38,7 +28,7 @@ ndvi <- (nir[[1]] - rgb[[1]]) / (nir[[1]] + rgb[[1]])
 ndvi_norm <- raster::stretch(ndvi, minv = 0, maxv = 255, minq = -1, maxq = 1)
 
 # create output image.
-png(filename=file.path(out_path,"a.png"))
+png(filename=file.path(out_path,"b.png"))
 plot(ndvi_norm,
      main = paste(img_num,"_nir.tiff",sep=""),
      axes = FALSE, box = FALSE)
