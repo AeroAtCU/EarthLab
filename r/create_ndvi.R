@@ -1,4 +1,5 @@
-# Import rgb, nir image and create ndvi plot. Eventually loop through entire set and export Vi images.
+# Input: Absolute paths to rgb, nir, and output image.
+# Output: True if successfully wrote image, False if error occured.
 
 # Useful links:
 # https://www.agisoft.com/pdf/PS_1.3%20-Tutorial%20(BL)%20-%20Orthophoto,%20DEM%20(GCPs).pdf
@@ -21,6 +22,7 @@ options(stringsAsFactors = FALSE) # want strings to be string s
 # this_wd <- getwd() # inconsistent
 this_wd <- "C:/Users/iaad5777/Documents/git/EarthLab/r" # harcoded for now
 images_path <- file.path(dirname(this_wd),"nirscene1") # assuming folder is in parent
+out_path <- file.path(dirname(this_wd),"r_tmpout") # assuming folder is in parent
 img_num <- "0001" # eventually, how to convert int to 0 padded string?
 subfolder <- "forest"
 
@@ -36,6 +38,8 @@ ndvi <- (nir[[1]] - rgb[[1]]) / (nir[[1]] + rgb[[1]])
 ndvi_norm <- raster::stretch(ndvi, minv = 0, maxv = 255, minq = -1, maxq = 1)
 
 # create output image.
+png(filename=file.path(out_path,"a.png"))
 plot(ndvi_norm,
      main = paste(img_num,"_nir.tiff",sep=""),
      axes = FALSE, box = FALSE)
+dev.off()
