@@ -100,7 +100,9 @@ def calc_ndvi(nir, rgb):
 # define inputs path and type (currently only tested on .tiffs from above dataset)
 ivrl_folder = os.path.join("nirscene1", "country") # dataset folder (nirscene1) and subfolder (country, forest, etc) with actual images
 script_path = os.path.dirname(os.path.abspath(__file__)) # get current (script's) directory
-read_path = os.path.join(script_path, ivrl_folder, "") # full path to folder. last <""> adds the correct slash or backslash. works w/ / and \ bc python, but safer
+# full path to folder. last "" adds correct slash or backslash. works anyway with / and \, but safer
+read_path = os.path.join(os.path.dirname(script_path), ivrl_folder, "") # needed second os.path.dirname to go to second parent.
+
 ext_nir = "_nir.tiff"
 ext_rgb = "_rgb.tiff"
 write_path = read_path # provides options

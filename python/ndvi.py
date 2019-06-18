@@ -1,3 +1,4 @@
+# DEPRECIATED. Only here for posterity. "ndvi_ivrl.py" works.
 # purpose: read an rgb and nir .tiff image, combine and export into an ndvi image
 # (and possibly other xVI) images
 # for this to work on a personal computer, change the path variable to whatever it is on your machine
