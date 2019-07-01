@@ -7,21 +7,23 @@
 # ":s/^/# /" (comment selected block) will crash rstudio (vim input mode)
 
 # this_wd <- getwd() # should be better, but inconsistent. Half the time defaults to ../Documents instead of .../git/...
-rm(list=ls()) # clear all variables. Probably bad practice but seemingly necessary to ensure certain settings change
+rm(list=ls()) # clear all variables. Bad practice but seemingly necessary to ensure certain settings change
 cat("\014") # send C-L to console to clear
 # setwd("C:/Users/iaad5777/Documents/git/EarthLab/r") # harcoded for now
+# setwd("C:/Users/iaad5777/Documents/git/EarthLab/r") # harcoded for now. necessary to source the create
 # On linux, getwd() on starup returns /home/<username>. on windows, half the time
 # does that, half the time print /.../EarthLab/r
 
-source("create_save_ndvi.R")
+this_wd <- "/home/ian/Documents/git/EarthLab/r" # for linux #======#
+setwd(this_wd)
+source(file.path(this_wd,"create_save_ndvi.R"))
 
 # needs work
-this_wd <- "C:/Users/iaad5777/Documents/git/EarthLab/r" # harcoded for now
-# this_wd <- "/home/ian/Documents/git/EarthLab/r" # for linux
+# this_wd <- "C:/Users/iaad5777/Documents/git/EarthLab/r" # harcoded for now
 images_path <- file.path(dirname(this_wd),"nirscene1") # assuming folder is in parent
 out_path <- file.path(dirname(this_wd),"r_tmpout") # assuming folder is in parent
 img_num <- "0033" # eventually, how to convert int to 0 padded string?
-subfolder <- "country"
+subfolder <- "forest"
 subfolder_list <- c("country", "field", "forest", "mountain", "water") # list of usable ivrl folders
 
 rgb_path <- (file.path(images_path, subfolder, (paste(img_num,"_rgb.tiff",sep=""))))
