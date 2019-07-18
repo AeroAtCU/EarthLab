@@ -1,7 +1,7 @@
 # DEPRECIATED. Only here for posterity. "ndvi_ivrl.py" works.
 # purpose: read an rgb and nir .tiff image, combine and export into an ndvi image
 # (and possibly other xVI) images
-# for this to work on a personal computer, change the path variable to whatever it is on your machine
+# for this to work on a personal computer, change the path variable to whatever it is on your machine. Bad practice.
 
 import numpy as np
 # import pandas as pd # for dataframe
@@ -102,7 +102,7 @@ savi_norm = normalize_255(savi, rgb)
 evi_norm = normalize_255(evi, rgb)
 
 if np.array_equal(ndvi_norm, savi_norm):
-    print("something when wrong with savi calculation")
+    print("something went wrong with savi calculation")
 
 # write image
 imageio.imwrite(path + prefix + "_ndvi.jpg", ndvi_norm[:, :])
