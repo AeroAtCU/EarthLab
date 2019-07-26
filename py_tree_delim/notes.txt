@@ -1,0 +1,22 @@
+https://digitalcommons.unl.edu/cgi/viewcontent.cgi?referer=&httpsredir=1&article=1182&context=usdafsfacpub
+- (pg 6) VWF (variable window filter): uses known height:crown_diamter ratio to deliminate trees. uses point cloud. 
+- Matches differently object scaled differently but similar in shape to the mexican hat (which matches a confer shape). SWE. Does not need ratio.
+
+https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLI-B8/563/2016/isprs-archives-XLI-B8-563-2016.pdf
+- uses CHM (canopy height model) to find tree centerpoints using local maxes. uses centerpoints to create voronoi diagrams, compares the edges to the negative slope (valley) points from the image, uses that to estimate tree area.
+
+http://quantitativeecology.org/using-rlidar-and-fusion-to-delineate-individual-trees-through-canopy-height-model-segmentation/
+- something similar done in r
+
+http://cran.r-project.org/web/packages/tripack/index.html
+- r package tripack for creating vonoloi diagrams
+
+https://link.springer.com/content/pdf/10.1007%2F3-540-44842-X_84.pdf
+- "An Explicit Solution for Computing theEuclideand-dimensional Voronoi Diagram ofSpheres in a Floating-Point Arithmetic"
+
+http://groups.csail.mit.edu/graphics/classes/6.838/S98/meetings/m25/mm.html
+- good vonoloi resource
+
+Photometric Stereo, lambertian reflectance.
+use differences in light diffusivity (reflectivity)
+to find diff's between ground and trees, different types of trees
