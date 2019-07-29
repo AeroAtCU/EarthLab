@@ -1,3 +1,7 @@
+Sobel operator (edge detecting filter)
+Photometric Stereo 
+Lambertian, Oren-Nayar models
+
 https://digitalcommons.unl.edu/cgi/viewcontent.cgi?referer=&httpsredir=1&article=1182&context=usdafsfacpub
 - (pg 6) VWF (variable window filter): uses known height:crown_diamter ratio to deliminate trees. uses point cloud. 
 - Matches differently object scaled differently but similar in shape to the mexican hat (which matches a confer shape). SWE. Does not need ratio.
@@ -20,3 +24,6 @@ http://groups.csail.mit.edu/graphics/classes/6.838/S98/meetings/m25/mm.html
 Photometric Stereo, lambertian reflectance.
 use differences in light diffusivity (reflectivity)
 to find diff's between ground and trees, different types of trees
+
+https://www.sciencedirect.com/topics/computer-science/lambertian-model
+- hard math on lambertian and oren-nayar models

@@ -17,8 +17,7 @@ def normalize_vegidx(vegidx_im, rgb):
     # remove outliers (vegidx should always go between -1:1)
     output_im = vegidx_im
     output_im[output_im > 5] = 0
-    output_im[output_im > 1] = 1
-    output_im[output_im < 0] = 0
+    output_im[output_im > 1] = 1 output_im[output_im < 0] = 0
 
     # normalize the values to work best with images
     output_im *= 255 / np.max(output_im) # equivalent to output_im = 255 * (output_im / np.max(output_im)), but probably faster
