@@ -7,7 +7,7 @@ import os
 import PIL as pil
 import sys
 
-def make_gray(input_im):
+def make_gray(input_im, make_uint8 = False):
     # make int8 so averaging does not overflow
     input_im = np.float64(input_im)
     
@@ -15,18 +15,21 @@ def make_gray(input_im):
     xleng = np.shape(input_im)[0]
     yleng = np.shape(input_im)[1]
     
-    # creat output 1d array, populated w 0
+    # creat output 1d array, populated with 0
     out_im = np.zeros((xleng, yleng, 1))
     
     # make black and white using averages
     out_im[:,:,0] = (input_im[:,:,0] + input_im[:,:,1] + input_im[:,:,2]) / 3
+    #out_im[:,:,0] = np.mean(input_im[:,:,:]) # does not work, but should b/c safer
     
-    # make uint8
-    out_im = np.uint8(out_im)
+    #make uint8 if desired
+    if (make_uint8):
+        out_im = np.uint8(out_im)
     
     return out_im
 
-input_im_name = "ex.png"
+
+input_im_name = "ex2.png"
 input_im_path = os.path.join("home","ian","Pictures",input_im_name)
 this_path = sys.path[0]
 
@@ -37,7 +40,7 @@ if (np.shape(input_im)[2] != 3):
     print("input image is not 3 dimensional (RGB), exiting")
     exit(0)
 
-gray = make_gray(input_im)
+gray = make_gray(input_im, True)
 print(gray)
 
 imageio.imwrite('out.png', gray)

@@ -1,6 +1,10 @@
-Sobel operator (edge detecting filter)
+Sobel operator (edge detecting filter) (implemented with opencv)
 Photometric Stereo 
-Lambertian, Oren-Nayar models
+Lambertian (perfectly "matte"), Oren-Nayar models
+Gabor filter, Otsu's method
+Bayesian Network
+
+Camera with known GPS coord and orientation (direction). Facing away from the sun, with a method of knowing how cloudy it is (forcast, mirror, watever). Knowing the time -> sun position -> light source vector. Take pictures throughout the day. Combine into 3d map. if looking down upon a plot, can generate some sort of point cloud or at least a DEM. but why?
 
 https://digitalcommons.unl.edu/cgi/viewcontent.cgi?referer=&httpsredir=1&article=1182&context=usdafsfacpub
 - (pg 6) VWF (variable window filter): uses known height:crown_diamter ratio to deliminate trees. uses point cloud. 
@@ -27,3 +31,26 @@ to find diff's between ground and trees, different types of trees
 
 https://www.sciencedirect.com/topics/computer-science/lambertian-model
 - hard math on lambertian and oren-nayar models
+
+https://www.sciencedirect.com/science/article/pii/S0166361517305687
+- using phtometric stereo to make 3d models of leaves, then finding the viens 
+- and making images of just the veins. used for categorization.
+- Math wise: they create the 3d model like any other Photometric Stereo, then
+- apply a function to tell you how "rutty" or "ridgey" it is, extract it,
+- apply some (Gabor filter, Otsu's method) math, and done. disregards infections
+- , anything that changes leaf color. Just looks at 3d model.
+
+https://blog.saush.com/2011/04/20/edge-detection-with-the-sobel-operator-in-ruby/
+- code implementation of sobel filter
+
+Lois Grant, Diffuse and Specular Characteristics of Leaf Reflectance
+https://reader.elsevier.com/reader/sd/pii/0034425787900642?token=617D7AED68873B4F87F6F61137B707EFAD8DC8778D8F44DD569CE0A49763CF5340BD1BEC2E3B1DD7EEABD11AE8A8A6B0
+- "this has lead to the simplifying assumption that a leaf may be considered a diffuse, lambertian reflector".
+
+http://users.eecs.northwestern.edu/~yingwu/teaching/EECS432/Notes/lighting.pdf
+- the hard math of photometric stereo
+
+http://web.yonsei.ac.kr/hgjung/Lectures/AUE859/9.%20Photometric%20Stereo.pdf
+- can use 3 cameras, one R, one B, one G, and take a single RGB picture. Seperate later.
+
+
