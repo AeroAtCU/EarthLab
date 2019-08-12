@@ -1,8 +1,11 @@
 Sobel operator (edge detecting filter) (implemented with opencv)
 Photometric Stereo 
-Lambertian (perfectly "matte"), Oren-Nayar models
+Lambertian (perfectly "matte"), Oren-Nayar models (lambertian + spectral highlights + something else)
 Gabor filter, Otsu's method
-Bayesian Network
+Bayesian Network, RANSAC
+Successive Over Relaxation (solves linear least squares)
+
+can you create a pseudo lambertian surface if your lighting is sufficiently diffused?
 
 Camera with known GPS coord and orientation (direction). Facing away from the sun, with a method of knowing how cloudy it is (forcast, mirror, watever). Knowing the time -> sun position -> light source vector. Take pictures throughout the day. Combine into 3d map. if looking down upon a plot, can generate some sort of point cloud or at least a DEM. but why?
 
@@ -52,5 +55,8 @@ http://users.eecs.northwestern.edu/~yingwu/teaching/EECS432/Notes/lighting.pdf
 
 http://web.yonsei.ac.kr/hgjung/Lectures/AUE859/9.%20Photometric%20Stereo.pdf
 - can use 3 cameras, one R, one B, one G, and take a single RGB picture. Seperate later.
+
+https://sites.google.com/site/photometricstereodata/
+- dataset for testing, comparison
 
 

@@ -1,4 +1,5 @@
-# eventually, take x y tree crown centerpoints (pixel locations) and create a thiessen (voronoi) polygon from them for comparison to negative slope map
+# just use the built in voronoi objects
+
 import matplotlib.pyplot as plt
 from scipy.spatial  import Voronoi, voronoi_plot_2d
 import numpy as np

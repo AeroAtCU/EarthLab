@@ -1,5 +1,4 @@
-# given input image path, create a new image (and return the image)
-# with the edges
+# just use the built in SciPy sobel operator.
 
 import numpy as np
 import imageio
