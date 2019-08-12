@@ -8,5 +8,6 @@ r_tmpout/
 DCIM/
 r/r.Rproj
 .RData
+photometric_stereo/DiLiGenT/*
 
 *.tif

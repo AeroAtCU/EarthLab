@@ -57,6 +57,11 @@ http://web.yonsei.ac.kr/hgjung/Lectures/AUE859/9.%20Photometric%20Stereo.pdf
 - can use 3 cameras, one R, one B, one G, and take a single RGB picture. Seperate later.
 
 https://sites.google.com/site/photometricstereodata/
-- dataset for testing, comparison
+- DiLiGenT dataset for testing, comparison
 
+https://pysolar.readthedocs.io/en/latest/
+- would possibly work for finding sunlight vectors
 
+****
+
+in https://github.com/soravux/pms, must install with scipy==1.1.0
