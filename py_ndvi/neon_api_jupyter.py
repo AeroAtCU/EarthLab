@@ -25,18 +25,15 @@ data_response = requests.get(SERVER + 'data/' + PRODUCTCODE + '/' + SITECODE + '
 data_response_json = data_response.json()
 # print(json.dumps(data_response_json, indent=2))
 
-for line in data_response_json['data']['siteCode']:
-    print(line)
-    print()
-
-for line in data_response_json['data']:
-    print(line)
-    print()
 
 url_list = list()
 for item in data_response_json['data']['files']:
     print(item['url'])
     url_list.append(item['url'])
+    
+csv_data_response = requests.get(url_list[0])
+print(csv_data_response.text)
+
 
 #so it goes: data_response_json -> files -> index[x] -> url   
 #files is a list inside the the dict data_response_json
