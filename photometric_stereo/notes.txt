@@ -65,3 +65,4 @@ https://pysolar.readthedocs.io/en/latest/
 ****
 
 in https://github.com/soravux/pms, must install with scipy==1.1.0
+https://www.dotnetperls.com/string-list-python
