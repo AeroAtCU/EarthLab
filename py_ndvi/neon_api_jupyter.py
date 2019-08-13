@@ -33,7 +33,10 @@ for line in data_response_json['data']:
     print(line)
     print()
 
-print(data_response_json['data']['files'][4]['url'])
+url_list = list()
+for item in data_response_json['data']['files']:
+    print(item['url'])
+    url_list.append(item['url'])
 
 #so it goes: data_response_json -> files -> index[x] -> url   
 #files is a list inside the the dict data_response_json
