@@ -7,8 +7,6 @@ Successive Over Relaxation (solves linear least squares)
 
 can you create a pseudo lambertian surface if your lighting is sufficiently diffused?
 
-Camera with known GPS coord and orientation (direction). Facing away from the sun, with a method of knowing how cloudy it is (forcast, mirror, watever). Knowing the time -> sun position -> light source vector. Take pictures throughout the day. Combine into 3d map. if looking down upon a plot, can generate some sort of point cloud or at least a DEM. but why?
-
 https://digitalcommons.unl.edu/cgi/viewcontent.cgi?referer=&httpsredir=1&article=1182&context=usdafsfacpub
 - (pg 6) VWF (variable window filter): uses known height:crown_diamter ratio to deliminate trees. uses point cloud. 
 - Matches differently object scaled differently but similar in shape to the mexican hat (which matches a confer shape). SWE. Does not need ratio.
