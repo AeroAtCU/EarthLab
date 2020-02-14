@@ -1,0 +1,29 @@
+spectral resampling
+what would landsat see relative to the neon data?
+- is there a correction factor you can apply to landsat to make it more like neon?
+
+planet data compared to landsat
+- research and education licence to get planet data
+- SD10x or 3K 3R 3S preferable for data b/c much better separation of r/g/b bands
+- - 4 Band PlanetScope, PS2 SD
+- linear regression, gain & something
+- - Fit both to a polynomial, comapare coefficients?
+
+indeces that use RGB & NIR, look at the correlation b/n that and landsat (historgram_ before and after adjustement. after adjustement it should move on top
+- k mean sclustering
+
+get a number of planet scenes with the same wavelengths (?) and compare it to eachother.
+Same sensor measuring the same bands, 
+
+spectral adjustement with two sensors from the same day - if it's the same you can use it for every one otherwise you have to do it individually
+
+spectrally flat areas, sattelite callibration sites
+
+february conference
+--------------
+-------------
+coop with nga doing computer vision workflows
+gcp workflow (ground control points)
+phenocam
+
+I am interested in comparing Planet data to Landsat data, in an effort to artificially increase Landsat's accuracy and decrease it's pixel size. If I can find a semi-consistent method of adjustment,  the Landsat data with it's many spectra can be improved beyond it's large pixel size.
