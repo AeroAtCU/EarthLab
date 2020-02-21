@@ -1,4 +1,5 @@
 rasterio.mask/ open
+
 shapely construct a geometric object
 
 with raserio.open(filepath)
@@ -12,6 +13,8 @@ asprs_202 on git
 chocolatey
 17.034300, 78.183312 
 
+https://github.com/earthlab/earth-analytics-python-env
+http://geojson.io/
 ------------------
 ---- previous ----
 ------------------
