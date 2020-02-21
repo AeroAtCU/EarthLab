@@ -1,3 +1,21 @@
+rasterio.mask/ open
+shapely construct a geometric object
+
+with raserio.open(filepath)
+
+profile -> transform object (dict)
+
+[Px  ULx
+0 Py ULy]
+
+asprs_202 on git
+chocolatey
+17.034300, 78.183312 
+
+------------------
+---- previous ----
+------------------
+
 spectral resampling
 what would landsat see relative to the neon data?
 - is there a correction factor you can apply to landsat to make it more like neon?
