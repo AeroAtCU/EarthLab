@@ -1,5 +1,10 @@
 rasterio.mask/ open
 
+# to start session:
+conda activate earth-analytics-python
+> conda deactivate # to end
+
+
 shapely construct a geometric object
 
 with raserio.open(filepath)
