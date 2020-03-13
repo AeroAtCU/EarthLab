@@ -10,6 +10,6 @@ r/r.Rproj
 .RData
 photometric_stereo/DiLiGenT/*
 Spring2020/.ipynb_checkpoints/*
-
+data/*
 Spring2020/.ipynb_checkpoints/*
 *.tif
