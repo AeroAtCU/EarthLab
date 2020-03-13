@@ -9,7 +9,10 @@ DCIM/
 r/r.Rproj
 .RData
 photometric_stereo/DiLiGenT/*
+Spring2020/.ipynb_checkpoints/*.ipynb
 Spring2020/.ipynb_checkpoints/*
-data/*
-Spring2020/.ipynb_checkpoints/*
+Spring2020/__pycache__/*
+Spring2020/data/*
+Spring2020/all_data/*
 *.tif
+
